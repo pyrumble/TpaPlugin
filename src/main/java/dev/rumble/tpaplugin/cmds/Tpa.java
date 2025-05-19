@@ -35,17 +35,17 @@ public class Tpa implements CommandExecutor {
                     TpaPlugin.tpaRequests.put(to.getUniqueId(),((Player) sender).getUniqueId());
                     ColoredMsg.sendToPlayer(to,"Hey, " + "&e" +to.getName() + "\n"
                             +"&6" + sender.getName() + " &fte envió una solicitud para teletransportarse hacia ti, ¿Qué harás con la solicitud?");
-
-                    TextComponent accept = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&a[La acepto, quiero que se teletansporte a mí]"));
-                    accept.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tpaaccept"));
-                    TextComponent deny = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&c[La rechazo, no quiero que se teletransporte a mí]"));
-                    deny.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tpadeny"));
-                    BaseComponent[] components = {accept,deny};
+                    TextComponent space = new TextComponent(" ");
+                    TextComponent accept = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&a[La acepto]"));
+                    accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaaccept"));
+                    TextComponent deny = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&c[La rechazo]"));
+                    deny.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpadeny"));
+                    BaseComponent[] components = {accept,space,deny};
                     to.spigot().sendMessage(components);
                     ColoredMsg.sendToPlayer(((Player) sender), TpaPlugin.prefix + "&aHas enviado una solicitud de tp exitosamente a " + to.getName());
                 }else ColoredMsg.sendToPlayer(((Player) sender),  TpaPlugin.prefix +"&cEste jugador ya tiene una solicitud de tp!");
             }
-        } else ColoredMsg.sendToPlayer(((Player) sender),"&cUso correcto: /tpr <jugador>");
+        } else ColoredMsg.sendToPlayer(((Player) sender),"&cUso correcto: /tpa <jugador>");
         return true;
         }
 
