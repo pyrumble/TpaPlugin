@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class TpaPlugin extends JavaPlugin{
     public final static String prefix = "&6&l[TpaPlugin]&r ";
-    public final static String dbUrl = "jdbc:sqlite:/plugins/TpaPlugin/requests.db";
+    public final static String dbUrl = "jdbc:sqlite:plugins/TpaPlugin/requests.db";
     @Override
     public void onEnable() {
         saveDefaultConfig();
