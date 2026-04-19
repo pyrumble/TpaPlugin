@@ -13,35 +13,45 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public final class TpaPlugin extends JavaPlugin{
-    public static ConcurrentHashMap<UUID, UUID> tpaRequests = new ConcurrentHashMap<>();
     public final static String prefix = "&6&l[TpaPlugin]&r ";
-    public final static String dbUrl = "jdbc:sqlite:requests.db";
+    public final static String dbUrl = "jdbc:sqlite:/plugins/TpaPlugin/requests.db";
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         try(Connection conn = DriverManager.getConnection(dbUrl)){
             String sql = """
                         CREATE TABLE IF NOT EXISTS Requests(
-                        id INTEGER AUTOINCREMENT NOT NULL,
-                        origin VARCHAR NOT NULL,
-                        destination VARCHAR NOT NULL
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        origin TEXT NOT NULL COLLATE NOCASE,
+                        destination TEXT NOT NULL COLLATE NOCASE
                         )""";
             Statement s = conn.createStatement();
             s.execute(sql);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        getCommand("tpa").setExecutor(new Tpa());
-        getCommand("tpaaccept").setExecutor(new TpaAccept());
-        getCommand("tpadeny").setExecutor(new TpaDeny());
-        ColoredMsg.sendToConsole(prefix + "El plugin se inicio &acorrectamente\n\t&rVersion: "
+        getCommand("tpa").setExecutor(new Tpa(this));
+        getCommand("tpaaccept").setExecutor(new TpaAccept(this));
+        getCommand("tpadeny").setExecutor(new TpaDeny(this));
+        getCommand("tparequests").setExecutor(new TpaRequests(this));
+        ColoredMsg.sendToConsole("\n\t&rVersion: "
                 +"&6"+ getDescription().getVersion()
-                + " &r| Desarrollador: pyrumble"
+                + "\n&rDev: " + getDescription().getAuthors()
         );
     }
 
     @Override
     public void onDisable() {
-        ColoredMsg.sendToConsole(prefix + "Se desactivo &acorrectamente el plugin\n"
-                + "¡Gracias por usar mi plugin!\n-pyrumble ");
+        saveConfig();
+        if (getConfig().getBoolean("clearRequests")){
+            try(Connection conn = DriverManager.getConnection(dbUrl)){
+                String sql = "DROP TABLE IF EXISTS Requests;";
+                Statement s = conn.createStatement();
+                s.execute(sql);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        ColoredMsg.sendToConsole("¡Gracias por usar mi plugin!\n-pyrumble ");
     }
 }

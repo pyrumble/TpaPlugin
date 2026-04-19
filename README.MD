@@ -1,1 +1,7 @@
-TpaPlugin for minecraft 1.20.1+
+# TpaPlugin
+Un plugin de /tpa en español para Minecraft 1.21.x
+
+## Features:
+
+- Multi tp request support
+- List all tp requests (not implemented yet)
