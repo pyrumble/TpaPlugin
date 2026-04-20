@@ -1,5 +1,5 @@
 name: TpaPlugin
-version: '2.0.0-rc2'
+version: '2.0.0-rc3'
 main: dev.rumble.tpaplugin.TpaPlugin
 api-version: '1.21'
 author: "pyrumble"
@@ -14,6 +14,9 @@ commands:
   tpadeny:
     description: "Rechaza una solicitud de tp"
     usage: "/tpadeny <jugador>"
-  tparequests:
+  tpahere:
     description: "Show your received tp requests"
-    usage: "/tparequests"
+    usage: "/tpahere"
+  tpaplugin:
+    description: "tpaplugin subcommands"
+    usage: "/tpaplugin <reload, ?>"

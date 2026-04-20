@@ -4,7 +4,6 @@ import dev.rumble.tpaplugin.TpaPlugin;
 import dev.rumble.tpaplugin.misc.TpaRequest;
 import dev.rumble.utils.ColoredMsg;
 import dev.rumble.utils.UsefulMethods;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,9 +17,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TpaRequests implements CommandExecutor {
+public class TpaHere implements CommandExecutor {
     private final JavaPlugin plugin;
-    public TpaRequests(JavaPlugin plugin){
+    public TpaHere(JavaPlugin plugin){
         this.plugin = plugin;
     }
     @Override
@@ -47,12 +46,12 @@ public class TpaRequests implements CommandExecutor {
             if (!userReceivedRequests.isEmpty()){
                 text = text +
                         "&6--------------" +
-                        "&bTP REQUESTS" +
+                        "&bPending tp requests" +
                         "&6--------------&r\n";
                 for (TpaRequest request: userReceivedRequests){
                     text = text.concat(request.origin + " &7->&r " + request.destination + "\n");
                 }
-                text = text.concat( "&6-------------------");
+                text = text.concat( "&6-----------------------------");
 
                 }
             else{
