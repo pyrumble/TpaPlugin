@@ -34,11 +34,11 @@ public class Tpa implements CommandExecutor {
         if (args.length == 1) {
             Player to = Bukkit.getPlayer(args[0]);
             if (to == null) {
-                sender.sendMessage("El jugador está desconectado o no existe");
+                ColoredMsg.sendToPlayer((Player) sender, plugin.getConfig().getString("messages.userDisconnectedOrNotFound"));
                 return true;
             }
             if (to == sender) {
-                sender.sendMessage("No puedes mandarte tpa a ti mismo.");
+                ColoredMsg.sendToPlayer((Player) sender, plugin.getConfig().getString("messages.userAutoTpException"));
                 return true;
             } else {
 
@@ -54,7 +54,7 @@ public class Tpa implements CommandExecutor {
                     destination = result.getString("destination");
                     if  (destination != null){
                         ColoredMsg.sendToPlayer(((Player) sender),
-                                TpaPlugin.prefix +"&cEste jugador ya tiene una solicitud de tp tuya!");
+                                TpaPlugin.prefix + plugin.getConfig().getString("messages.pendingRequestException"));
                         return true;
                     }
                     // Check if the destination has more than 10 requests
@@ -67,7 +67,7 @@ public class Tpa implements CommandExecutor {
                     }
                     if (destinationRequests.toArray().length > 10){
                         ColoredMsg.sendToPlayer((Player) sender,
-                                TpaPlugin.prefix + plugin.getConfig().getString("messages.maxRequests"));
+                                TpaPlugin.prefix + plugin.getConfig().getString("messages.maxTpRequests"));
                         return true;
                     }
 
@@ -75,7 +75,7 @@ public class Tpa implements CommandExecutor {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                    // TpaPlugin.tpaRequests.put(to.getUniqueId(),((Player) sender).getUniqueId());
+
                     String sql3 = "INSERT INTO Requests(origin, destination) VALUES(?, ?)";
                     try(Connection conn = DriverManager.getConnection(TpaPlugin.dbUrl);
                         PreparedStatement ps = conn.prepareStatement(sql3)){
@@ -86,9 +86,11 @@ public class Tpa implements CommandExecutor {
                         throw new RuntimeException(e);
                     }
                     String messageDestination = plugin.getConfig().getString("messages.requestSentDestination");
-                    messageDestination = messageDestination.replace("{player}", to.getName());
+                    messageDestination = messageDestination.replace("{player}", sender.getName());
                     ColoredMsg.sendToPlayer(to,TpaPlugin.prefix + messageDestination);
                     TextComponent space = new TextComponent(" ");
+                    TextComponent actions = new TextComponent(
+                            ChatColor.translateAlternateColorCodes('&', "&eActions:"));
                     TextComponent accept = new TextComponent(
                             ChatColor.translateAlternateColorCodes('&', "&a[✔]"));
                     accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaaccept " + sender.getName()));
@@ -97,7 +99,7 @@ public class Tpa implements CommandExecutor {
                             ChatColor.translateAlternateColorCodes('&', "&c[❌]"));
                     deny.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpadeny " + sender.getName()));
                     deny.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to deny").create()));
-                    BaseComponent[] components = {accept,space,deny};
+                    BaseComponent[] components = {actions,space ,accept,space,deny};
                     to.spigot().sendMessage(components);
                     String messageOrigin = plugin.getConfig().getString("messages.requestSentOrigin");
                     messageOrigin = messageOrigin.replace("{player}", to.getName());

@@ -45,13 +45,13 @@ public class TpaHere implements CommandExecutor {
             String text = "";
             if (!userReceivedRequests.isEmpty()){
                 text = text +
-                        "&6--------------" +
-                        "&bPending tp requests" +
-                        "&6--------------&r\n";
+                        "&6-------" +
+                        "&bPending tp requests to accept or deny" +
+                        "&6-------&r\n";
                 for (TpaRequest request: userReceivedRequests){
-                    text = text.concat(request.origin + " &7->&r " + request.destination + "\n");
+                    text = text.concat(request.origin + " (You) &7->&r " + request.destination + "\n");
                 }
-                text = text.concat( "&6-----------------------------");
+                text = text.concat( "&6------------------------------------");
 
                 }
             else{

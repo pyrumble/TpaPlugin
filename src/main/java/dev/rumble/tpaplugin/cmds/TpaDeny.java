@@ -36,7 +36,7 @@ public class TpaDeny implements CommandExecutor {
             ColoredMsg.sendToPlayer(((Player) sender), TpaPlugin.prefix + "&c/tpadeny <player>");
             return  true;
         }
-        // UUID userUUID = TpaPlugin.tpaRequests.get(((Player) sender).getUniqueId());
+
         Player requester = Bukkit.getPlayer(args[0]);
         if(requester == null){
             ((Player) sender).getUniqueId();
@@ -56,16 +56,19 @@ public class TpaDeny implements CommandExecutor {
             throw new RuntimeException(e);
         }
         if(origin != null) {
-
+            String messageDestination = plugin.getConfig().getString("messages.requestDeniedDestination");
+            messageDestination = messageDestination.replace("{player}", origin);
+            String messageOrigin = plugin.getConfig().getString("messages.requestDeniedOrigin");
+            messageOrigin = messageOrigin.replace("{player}", sender.getName());
             ColoredMsg.sendToPlayer(((Player) sender),
-                    TpaPlugin.prefix + "Has &c&lrechazado &rla solicitud de tp.");
+                    TpaPlugin.prefix + messageDestination);
             ColoredMsg.sendToPlayer(requester,
-                    TpaPlugin.prefix + "&6" + sender.getName() + " &cha rechazado tu solicitud de tp.");
+                    TpaPlugin.prefix + messageOrigin);
             TpaHandler.removeRequest(origin,sender.getName());
 
         }else{
             ColoredMsg.sendToPlayer(
-                    ((Player) sender), TpaPlugin.prefix +  "&cNo tienes una solicitud de tp de ese jugador!");
+                    ((Player) sender), TpaPlugin.prefix +  plugin.getConfig().getString("messages.noTpRequest"));
         }
 
         return true;

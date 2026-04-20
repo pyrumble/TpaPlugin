@@ -53,17 +53,20 @@ public class TpaAccept implements CommandExecutor{
             throw new RuntimeException(e);
         }
         if(origin != null) {
-
-                ColoredMsg.sendToPlayer(((Player) sender),
-                        TpaPlugin.prefix + "Has &a&laceptado &rla solicitud de tp exitosamente.");
-                ColoredMsg.sendToPlayer(requester,
-                        TpaPlugin.prefix + "&e" + sender.getName() + " &a&lacepto &r&6tu solicitud de tp!");
+            String messageDestination = plugin.getConfig().getString("messages.requestAcceptedDestination");
+            messageDestination = messageDestination.replace("{player}", origin);
+            String messageOrigin = plugin.getConfig().getString("messages.requestAcceptedOrigin");
+            messageOrigin = messageOrigin.replace("{player}", sender.getName());
+            ColoredMsg.sendToPlayer(((Player) sender),
+                    TpaPlugin.prefix + messageDestination);
+            ColoredMsg.sendToPlayer(requester,
+                    TpaPlugin.prefix + messageOrigin);
                 requester.teleport(((Player) sender));
             TpaHandler.removeRequest(origin,sender.getName());
 
         }else{
             ColoredMsg.sendToPlayer(
-                    ((Player) sender), TpaPlugin.prefix +  "&cNo tienes una solicitud de tp de ese jugador!");
+                    ((Player) sender), TpaPlugin.prefix +  plugin.getConfig().getString("messages.noTpRequest"));
         }
 
         return true;
