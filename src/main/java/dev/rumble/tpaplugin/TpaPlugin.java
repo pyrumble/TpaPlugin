@@ -36,7 +36,7 @@ public final class TpaPlugin extends JavaPlugin implements TabCompleter {
         getCommand("tpa").setExecutor(new Tpa(this));
         getCommand("tpaaccept").setExecutor(new TpaAccept(this));
         getCommand("tpadeny").setExecutor(new TpaDeny(this));
-        getCommand("tparequests").setExecutor(new TpaHere(this));
+        getCommand("tpahere").setExecutor(new TpaHere(this));
         getCommand("tpaplugin").setExecutor(new TPP(this));
         getCommand("tpaplugin").setTabCompleter(this);
         ColoredMsg.sendToConsole("\n"+prefix +"\n&rVersion: "
